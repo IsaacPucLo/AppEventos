@@ -6,7 +6,6 @@ using Framework.Excepciones;
 
 namespace Tests.RecuperarInformacion
 {
-
     public class RecuperadorRegistrosTests
     {
         [Fact(DisplayName="Dado un directorio vacio, cuando se solicita leer el archivo, entonces lanza excepción")]
@@ -41,17 +40,65 @@ namespace Tests.RecuperarInformacion
 
         }
 
+        [Fact(DisplayName = "Dado un archivo existente, cuando el evento tiene mas de 50 caracteres, entonces lanza excepción")]
+        public void DadoArchivoExistenteCuandoEventoTieneLongitudMayorALaPermitidaEntoncesLanzaExcepcion()
+        {
+            //Arrange
+            var Directorio = @"D:\Temporal";
+            var NombreArchivo = "eventos.txt";
+            List<string> Cadenas = new List<string>();
+            Cadenas.Add("Este es un Evento De Muy larga Longitud De Manera Que Excede el máximo permitido y hace que la prueba falle,22/09/2021 15:30");
+            var ControladorDoble = new ControladorDobleArchivoNoExistente(true, () => Cadenas);
+            var SUT = GenerarInstanciaSUT(Directorio, NombreArchivo, ControladorDoble);
+
+            //Act, Assert
+            var ExcepcionLanzada = Assert.Throws<BadRequestException>(() => SUT.RecuperarEventos());
+
+
+        }
+
+        [Fact(DisplayName = "Dado un archivo existente, cuando el evento no cumple el formato de las fechas, entonces lanza excepción")]
+        public void DadoArchivoExistenteCuandoEventoNoCumpleFormatoDeFechasEntoncesLanzaExcepcion()
+        {
+            //Arrange
+            var Directorio = @"D:\Temporal";
+            var NombreArchivo = "eventos.txt";
+            List<string> Cadenas = new List<string>();
+            Cadenas.Add("Evento de prueba,22-09-2021 15:30 P.M");
+            var ControladorDoble = new ControladorDobleArchivoNoExistente(true, () => Cadenas);
+            var SUT = GenerarInstanciaSUT(Directorio, NombreArchivo, ControladorDoble);
+
+            //Act, Assert
+            var ExcepcionLanzada = Assert.Throws<BadRequestException>(() => SUT.RecuperarEventos());
+        }
+
+        [Fact(DisplayName = "Dado un archivo existente, cuando el evento cumple las reglas de negocio, entonces se extrae la información")]
+        public void DadoArchivoExistenteCuandoEventoCumpleReglasDeNegocioEntoncesSeExtraeInformacionCorrecta()
+        {
+            //Arrange
+            var Directorio = @"D:\Temporal";
+            var NombreArchivo = "eventos.txt";
+            List<string> Cadenas = new List<string>();
+            var NombreEvento = "Evento de prueba";
+            int Año = 2021, Mes = 09, Dia = 22, Hora = 15, Minutos = 30;
+            var FechaEvento = new DateTime(Año, Mes, Dia, Hora, Minutos, 0);
+            Cadenas.Add($"{NombreEvento},{Dia}/{Mes:00}/{Año} {Hora}:{Minutos}");
+            var ControladorDoble = new ControladorDobleArchivoNoExistente(true, () => Cadenas);
+            var SUT = GenerarInstanciaSUT(Directorio, NombreArchivo, ControladorDoble);
+
+            //Act
+            var Resultado = SUT.RecuperarEventos();
+
+            Assert.Equal(NombreEvento, Resultado[0].Nombre);
+            Assert.Equal(FechaEvento, Resultado[0].FechaOcurrencia);
+        }
+
         private RecuperadorRegistros GenerarInstanciaSUT(string Directorio, string NombreArchivo, IControladorArchivo Controlador)
         {
             var SUT = new RecuperadorRegistros(Directorio,NombreArchivo, Controlador);
             return SUT;
         }
 
-        
-       
-        //La longitud del evento debe de ser de máximo 50 caracteres.
-        //La fecha debe de cumplir el formato que se indica: dd/mm/yyyy HH:mm
-        //Convertir los registros al modelo
     }
 
     public class ControladorDobleArchivoNoExistente: IControladorArchivo

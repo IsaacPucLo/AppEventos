@@ -22,7 +22,28 @@ namespace Features.RecuperarInformacion
             VerificarExistenciaArchivo();
             List<string> CadenasLeidas = _ControladorArchivoFisico.ExtraerCadenas(_RutaCompletaArchivo);
             ValidarFormatoCadenas(CadenasLeidas);
-            return null;
+            var EventosExtraidos = ExtraerEventosDeCadenas(CadenasLeidas);
+            return EventosExtraidos;
+        }
+
+        private List<EventoRecuperado> ExtraerEventosDeCadenas(List<string> CadenasLeidas)
+        {
+            var Resultado = new List<EventoRecuperado>();
+            foreach (var Evento in CadenasLeidas)
+            {
+                var EventoDividido = Evento.Split(',');
+                EventoRecuperado NuevoEventoExtraido = GenerarEvento(EventoDividido[0], EventoDividido[1]);
+                Resultado.Add(NuevoEventoExtraido);
+            }
+
+            return Resultado;
+        }
+
+        private EventoRecuperado GenerarEvento(string Evento, string FechaEvento)
+        {
+            var EventoGenerado = new EventoRecuperado(Evento,FechaEvento);
+            return EventoGenerado;
+            
         }
 
         private void ValidarFormatoCadenas(List<string> CadenasLeidas)
