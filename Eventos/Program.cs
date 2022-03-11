@@ -1,6 +1,7 @@
 ﻿using Features.DesplegarEventos;
 using Features.ProcesarEventos;
 using Features.RecuperarInformacion;
+using System;
 
 namespace Eventos
 {
@@ -12,10 +13,12 @@ namespace Eventos
             var NombreArchivo = "eventos.txt";
             var Controlador = new ControladorArchivo();
             IRecuperadorRegistros Recuperador = new RecuperadorRegistros(Directorio, NombreArchivo, Controlador);
-            IDesplegadorEventos Desplegador = new DesplegadorEventos();
+            var VisualizadorEnConsola = new VisualizadorMensajeConsola();
+            IDesplegadorEventos Desplegador = new DesplegadorEventos(VisualizadorEnConsola);
             var Procesador = new ProcesadorEventos();
             AppEventos App = new AppEventos(Recuperador, Desplegador, Procesador);
             App.Ejecutar();
+            Console.ReadKey();
         }
     }
 }

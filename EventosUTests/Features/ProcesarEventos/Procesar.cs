@@ -6,19 +6,7 @@ using Features.RecuperarInformacion;
 
 namespace Tests.ProcesarEventos
 {
-    internal class RecuperadorRegistrosParaPruebas : IRecuperadorRegistros
-    {
-        private readonly List<EventoRecuperado> _EventosPorDevolver;
-
-        public RecuperadorRegistrosParaPruebas(List<EventoRecuperado> EventosPorDevolver)
-        {
-            _EventosPorDevolver = EventosPorDevolver ?? throw new ArgumentNullException(nameof(EventosPorDevolver));
-        }
-        public List<EventoRecuperado> RecuperarEventos()
-        {
-            return _EventosPorDevolver;
-        }
-    }
+   
     public class Procesar
     {
         private DateTime _FechaActual;
@@ -27,6 +15,7 @@ namespace Tests.ProcesarEventos
         {
             _FechaActual = new DateTime(2022,03,11,12,0,0);
         }
+
         [Fact(DisplayName = "Cuando la fecha del evento es del pasado, entonces Evento Procesado tiene una marca que lo indica")]
         public void CuandoFechaEsDelPasadoEntoncesMarcarEventoProcesadoComoPasado()
         {
@@ -42,7 +31,7 @@ namespace Tests.ProcesarEventos
         }
 
         [Fact(DisplayName = "Cuando la fecha del evento es del futuro, entonces Evento Procesado tiene una marca que lo indica")]
-        public void CuandoFechaEsDelFuturoEntoncesMarcarEventoProcesadoComoPasado()
+        public void CuandoFechaEsDelFuturoEntoncesMarcarEventoProcesadoComoFuturo()
         {
             var EventosPorProcesar = GeneraEventoPorProcesar("Evento Futuro", _FechaActual.AddDays(10));
             var Procesador = GenerarInstanciaSUT();
@@ -92,8 +81,8 @@ namespace Tests.ProcesarEventos
         public void CuandoDiferenciaDeFechasEsEnMeses_EntoncesSeCalculaCantidadMeses(int DiasDeDiferencia,int MesEsperado)
         {
             var EventosPorProcesar = GeneraEventoPorProcesar("Evento con diferencia de Dias", _FechaActual.AddDays(DiasDeDiferencia));
-            var Procesador = GenerarInstanciaSUT();
-            var Resultado = Procesador.ProcesarEventos(EventosPorProcesar, _FechaActual);
+            var SUT = GenerarInstanciaSUT();
+            var Resultado = SUT.ProcesarEventos(EventosPorProcesar, _FechaActual);
             Assert.Equal(MesEsperado, Resultado[0].Diferencia);
             Assert.Equal(RangoDiferencia.Meses, Resultado[0].Rango);
         }

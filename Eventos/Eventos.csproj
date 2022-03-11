@@ -44,8 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppEventos.cs" />
+    <Compile Include="Features\DesplegarEventos\Implementaciones\VisualizadorMensajeConsola.cs" />
     <Compile Include="Features\DesplegarEventos\Implementaciones\DesplegadorEventos.cs" />
+    <Compile Include="Features\DesplegarEventos\Definiciones\IVisualizadorMensaje.cs" />
     <Compile Include="Features\ProcesarEventos\Definiciones\IProcesadorEventos.cs" />
+    <Compile Include="Features\ProcesarEventos\Definiciones\IProcesadorEventoIndividual.cs" />
+    <Compile Include="Features\ProcesarEventos\Implementaciones\ProcesadorRangoBase.cs" />
+    <Compile Include="Features\ProcesarEventos\Implementaciones\ProcesadorRangoDias.cs" />
+    <Compile Include="Features\ProcesarEventos\Implementaciones\ProcesadorRangoHoras.cs" />
+    <Compile Include="Features\ProcesarEventos\Implementaciones\ProcesadorRangoMeses.cs" />
+    <Compile Include="Features\ProcesarEventos\Implementaciones\ProcesadorRangoMinutos.cs" />
     <Compile Include="Features\ProcesarEventos\Modelos\EventoProcesado.cs" />
     <Compile Include="Excepciones\BadRequestException.cs" />
     <Compile Include="Excepciones\NotFoundedException.cs" />
