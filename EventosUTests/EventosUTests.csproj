@@ -63,7 +63,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="AppEventosTests.cs" />
+    <Compile Include="Features\DesplegarEventos\Desplegar.cs" />
+    <Compile Include="Features\ProcesarEventos\Procesar.cs" />
     <Compile Include="Features\RecuperarInformacion\RecuperadorRegistrosTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -79,6 +80,7 @@
       <Name>Eventos</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

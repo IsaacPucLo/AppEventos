@@ -1,4 +1,6 @@
-﻿using Features.RecuperarInformacion;
+﻿using Features.DesplegarEventos;
+using Features.ProcesarEventos;
+using Features.RecuperarInformacion;
 
 namespace Eventos
 {
@@ -11,7 +13,8 @@ namespace Eventos
             var Controlador = new ControladorArchivo();
             IRecuperadorRegistros Recuperador = new RecuperadorRegistros(Directorio, NombreArchivo, Controlador);
             IDesplegadorEventos Desplegador = new DesplegadorEventos();
-            AppEventos App = new AppEventos(Recuperador, Desplegador);
+            var Procesador = new ProcesadorEventos();
+            AppEventos App = new AppEventos(Recuperador, Desplegador, Procesador);
             App.Ejecutar();
         }
     }
