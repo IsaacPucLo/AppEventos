@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Features.DesplegarEventos
 {
-    public class DesplegadorEventos : IDesplegadorEventos
+    public class DesplegadorEventos : IDesplegarEventos
     {
         private const string PALABRA_TIEMPO_PASADO = "ocurrió";
         private readonly IVisualizadorMensaje _Visualizador;

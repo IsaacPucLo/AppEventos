@@ -2,7 +2,7 @@
 
 namespace Features.DesplegarEventos
 {
-    public class VisualizadorMensajeConsola: IVisualizadorMensaje
+    public class VisualizadorMensajeConsola: IVisualizarMensaje
     {
         public void VisualizarMensaje(string MensajePorvisualizar)
         {
